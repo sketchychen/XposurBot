@@ -1,5 +1,19 @@
 from datetime import datetime
 
+from discord.ext import commands
+
+
+bot = commands.Bot(command_prefix='x$')
+
+
+@bot.command(
+    name='hello',
+    help='test command'
+)
+async def hello_world(context):
+    await context.send('okay weirdo')
+
+
 @bot.event
 async def on_command_error(context, error):
     print('on_command_error fired')

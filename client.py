@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 # local imports
 import logger
+from bot import bot
 
 
 load_dotenv()
@@ -47,3 +48,4 @@ async def on_error(event, *args, **kwargs):
 
 
 client.run(TOKEN)
+bot.run(TOKEN)
