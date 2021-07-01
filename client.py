@@ -1,7 +1,11 @@
 # client.py
 import os
 import discord
+import datetime
 from dotenv import load_dotenv
+
+# local imports
+import logger
 
 
 load_dotenv()
@@ -14,12 +18,17 @@ client = discord.Client()
 ## RESPONDING TO SELF CONNECTION/GOING ONLINE ##
 @client.event
 async def on_ready():
+    # discord.utils.get returns first element in iterable
     guild = discord.utils.get(client.guilds)
 
-    print(
-        f'{client.user} is connected to the following guild(s):\n'
+    message = (
+        f'{client.user} connected to the following guild:\n'
         f'{guild.name} (id: {guild.id})'
     )
+
+    logger.audit(message)
+
+    print(message)
 
 
 ## RESPONDING TO EXCEPTIONS ##
