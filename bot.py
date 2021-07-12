@@ -1,16 +1,37 @@
-from datetime import datetime
-
+import discord
+import os
+import datetime
+from dotenv import load_dotenv
 from discord.ext import commands
 
+# local imports
+import logger
 
-bot = commands.Bot(command_prefix='x$')
+load_dotenv()
+TOKEN = os.getenv('BOT_TOKEN')
+
+bot = commands.Bot(command_prefix='&')
+
+@bot.event
+async def on_ready():
+    # discord.utils.get returns first element in iterable
+    guild = discord.utils.get(bot.guilds)
+    message = (
+        f'{bot.user} connected to the following guild:\n'
+        f'{guild.name} (id: {guild.id})'
+    )
+
+    logger.audit(message)
+
+    print(message)
 
 
 @bot.command(
     name='hello',
     help='test command'
 )
-async def hello_world(context):
+async def hello_world(context: commands.Context):
+    print('hello_world', context)
     await context.send('okay weirdo')
 
 
@@ -23,7 +44,10 @@ async def on_command_error(context, error):
     else:
         with open('err.log', 'a+') as file:
             file.write(
-                f'[{datetime.now()}] Unhandled exception:\n'
+                f'[{datetime.datetime.now()}] Unhandled exception:\n'
                 f'{context.__dict__}\n'
                 f'{error}\n'
             )
+
+
+bot.run(TOKEN)
